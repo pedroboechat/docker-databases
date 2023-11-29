@@ -1,0 +1,25 @@
+services:
+  database:
+    image: "mongodb/mongodb-community-server:7.0.1-ubi8"
+    container_name: "mongo-db"
+    restart: "unless-stopped"
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'db.runCommand(\"ping\").ok' | mongosh localhost:27017/test --quiet"]
+    environment:
+      - "MONGODB_INITDB_ROOT_USERNAME=${MONGO_USER}"
+      - "MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PSWD}"
+      - "MONGODB_INITDB_DATABASE=${MONGO_DATABASE}"
+    networks:
+      - "main"
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - "mongo-data:/data/db"
+      - "./database/initdb:/docker-entrypoint-initdb.d"
+
+networks:
+  main:
+    name: "databases-net"
+
+volumes:
+  mongo-data:
