@@ -4,7 +4,7 @@ services:
     container_name: "mariadb-db"
     restart: "unless-stopped"
     healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "--password=${SQL_PSWD}"]
+      test: ["CMD", "mariadb-admin", "ping", "--password=${DB_PASSWORD}"]
     environment:
       - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
       - "MYSQL_USER=${DB_USERNAME}"
@@ -14,7 +14,7 @@ services:
     networks:
       - "main"
     ports:
-      - "${SQL_PORT}:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - "./database/data:/var/lib/mysql"
       - "./database/initdb:/docker-entrypoint-initdb.d"

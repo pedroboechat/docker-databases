@@ -4,15 +4,15 @@ services:
     container_name: "postgresql-db"
     restart: "unless-stopped"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $SQL_USER"]
+      test: ["CMD-SHELL", "pg_isready -U $DB_USERNAME"]
     environment:
-      - "POSTGRES_USER=${SQL_USER}"
-      - "POSTGRES_PASSWORD=${SQL_PSWD}"
-      - "POSTGRES_DB=${SQL_DATABASE}"
+      - "POSTGRES_USER=${DB_USERNAME}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+      - "POSTGRES_DB=${DB_DATABASE}"
     networks:
       - "main"
     ports:
-      - "${SQL_PORT}:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - "./database/data:/var/lib/postgresql/data"
       - "./database/initdb:/docker-entrypoint-initdb.d"
