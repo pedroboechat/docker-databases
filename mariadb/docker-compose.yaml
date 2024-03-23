@@ -1,0 +1,24 @@
+services:
+  database:
+    image: "mariadb:11.3.2"
+    container_name: "mariadb-db"
+    restart: "unless-stopped"
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "--password=${SQL_PSWD}"]
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_USER=${DB_USERNAME}"
+      - "MYSQL_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_DATABASE=${DB_DATABASE}"
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_bin"]
+    networks:
+      - "main"
+    ports:
+      - "${SQL_PORT}:3306"
+    volumes:
+      - "./database/data:/var/lib/mysql"
+      - "./database/initdb:/docker-entrypoint-initdb.d"
+
+networks:
+  main:
+    name: "databases-net"
