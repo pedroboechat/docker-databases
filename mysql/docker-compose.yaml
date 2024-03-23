@@ -1,0 +1,24 @@
+services:
+  database:
+    image: "mysql:8.3.0"
+    container_name: "mysql-db"
+    restart: "unless-stopped"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--password=${DB_PASSWORD}"]
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_USER=${DB_USERNAME}"
+      - "MYSQL_PASSWORD=${DB_PASSWORD}"
+      - "MYSQL_DATABASE=${DB_DATABASE}"
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_bin"]
+    networks:
+      - "main"
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - "./database/data:/var/lib/mysql"
+      - "./database/initdb:/docker-entrypoint-initdb.d"
+
+networks:
+  main:
+    name: "databases-net"
