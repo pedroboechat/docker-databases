@@ -1,6 +1,6 @@
 services:
   database:
-    image: "postgres:16.1-bullseye"
+    image: "postgres:16.2-alpine3.19"
     container_name: "postgresql-db"
     restart: "unless-stopped"
     healthcheck:
