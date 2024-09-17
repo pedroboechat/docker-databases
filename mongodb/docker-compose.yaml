@@ -1,6 +1,6 @@
 services:
   database:
-    image: "mongodb/mongodb-community-server:7.0.1-ubi8"
+    image: "mongo:7.0.14"
     container_name: "mongo-db"
     restart: "unless-stopped"
     healthcheck:
@@ -14,12 +14,9 @@ services:
     ports:
       - "${MONGO_PORT}:27017"
     volumes:
-      - "mongo-data:/data/db"
+      - "./database/data:/data/db"
       - "./database/initdb:/docker-entrypoint-initdb.d"
 
 networks:
   main:
     name: "databases-net"
-
-volumes:
-  mongo-data:
